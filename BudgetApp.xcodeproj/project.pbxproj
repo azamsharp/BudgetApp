@@ -10,7 +10,7 @@
 		34BD43BF2895C7C10000BA49 /* AddBudgetCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BD43BE2895C7C10000BA49 /* AddBudgetCategoryView.swift */; };
 		34BD43C22895CD490000BA49 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BD43C12895CD490000BA49 /* Double+Extensions.swift */; };
 		34BD43C42895E4480000BA49 /* BudgetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BD43C32895E4480000BA49 /* BudgetDetailView.swift */; };
-		34BD43C62896189B0000BA49 /* BudgetCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BD43C52896189B0000BA49 /* BudgetCategory.swift */; };
+		34BD43C62896189B0000BA49 /* BudgetCategory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BD43C52896189B0000BA49 /* BudgetCategory+CoreDataClass.swift */; };
 		34ED226E2895AECC00D1DC87 /* BudgetAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED226D2895AECC00D1DC87 /* BudgetAppApp.swift */; };
 		34ED22702895AECC00D1DC87 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED226F2895AECC00D1DC87 /* ContentView.swift */; };
 		34ED22722895AECD00D1DC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34ED22712895AECD00D1DC87 /* Assets.xcassets */; };
@@ -18,6 +18,7 @@
 		34ED227D2895AF1300D1DC87 /* BudgetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34ED227B2895AF1300D1DC87 /* BudgetModel.xcdatamodeld */; };
 		34ED22802895AF3500D1DC87 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED227F2895AF3500D1DC87 /* CoreDataManager.swift */; };
 		34ED22832895B12800D1DC87 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34ED22822895B12800D1DC87 /* Model.swift */; };
+		8D572668289B14990039B680 /* TransactionCategory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D572667289B14990039B680 /* TransactionCategory+CoreDataClass.swift */; };
 		8DD065672896C82300EFEDB5 /* TransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD065662896C82300EFEDB5 /* TransactionListView.swift */; };
 		8DD065692896C91500EFEDB5 /* BudgetSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DD065682896C91500EFEDB5 /* BudgetSummaryView.swift */; };
 /* End PBXBuildFile section */
@@ -26,7 +27,7 @@
 		34BD43BE2895C7C10000BA49 /* AddBudgetCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBudgetCategoryView.swift; sourceTree = "<group>"; };
 		34BD43C12895CD490000BA49 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		34BD43C32895E4480000BA49 /* BudgetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDetailView.swift; sourceTree = "<group>"; };
-		34BD43C52896189B0000BA49 /* BudgetCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCategory.swift; sourceTree = "<group>"; };
+		34BD43C52896189B0000BA49 /* BudgetCategory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BudgetCategory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		34ED226A2895AECC00D1DC87 /* BudgetApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BudgetApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34ED226D2895AECC00D1DC87 /* BudgetAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetAppApp.swift; sourceTree = "<group>"; };
 		34ED226F2895AECC00D1DC87 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,6 +36,7 @@
 		34ED227C2895AF1300D1DC87 /* BudgetModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BudgetModel.xcdatamodel; sourceTree = "<group>"; };
 		34ED227F2895AF3500D1DC87 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		34ED22822895B12800D1DC87 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		8D572667289B14990039B680 /* TransactionCategory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionCategory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8DD065662896C82300EFEDB5 /* TransactionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListView.swift; sourceTree = "<group>"; };
 		8DD065682896C91500EFEDB5 /* BudgetSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetSummaryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,7 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				34BD43C12895CD490000BA49 /* Double+Extensions.swift */,
-				34BD43C52896189B0000BA49 /* BudgetCategory.swift */,
+				34BD43C52896189B0000BA49 /* BudgetCategory+CoreDataClass.swift */,
+				8D572667289B14990039B680 /* TransactionCategory+CoreDataClass.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -202,8 +205,9 @@
 				8DD065692896C91500EFEDB5 /* BudgetSummaryView.swift in Sources */,
 				34BD43C22895CD490000BA49 /* Double+Extensions.swift in Sources */,
 				34ED226E2895AECC00D1DC87 /* BudgetAppApp.swift in Sources */,
+				8D572668289B14990039B680 /* TransactionCategory+CoreDataClass.swift in Sources */,
 				34BD43BF2895C7C10000BA49 /* AddBudgetCategoryView.swift in Sources */,
-				34BD43C62896189B0000BA49 /* BudgetCategory.swift in Sources */,
+				34BD43C62896189B0000BA49 /* BudgetCategory+CoreDataClass.swift in Sources */,
 				8DD065672896C82300EFEDB5 /* TransactionListView.swift in Sources */,
 				34ED22802895AF3500D1DC87 /* CoreDataManager.swift in Sources */,
 				34ED227D2895AF1300D1DC87 /* BudgetModel.xcdatamodeld in Sources */,

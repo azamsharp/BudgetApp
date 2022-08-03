@@ -16,5 +16,5 @@ extension Double {
         return formatter.string(from: NSNumber(value: self)) ?? ""
         
     }
-    
+        
 }

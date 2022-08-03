@@ -9,23 +9,17 @@ import SwiftUI
 
 struct BudgetSummaryView: View {
     
-    @EnvironmentObject private var model: Model
+    @ObservedObject var budgetCategory: BudgetCategory
     
     var body: some View {
+        let _ = print(Self._printChanges())
         VStack {
             
-            if let budgetCategory = model.budgetCategory {
-                Text("Total \(budgetCategory.transactionsTotal.formatAsCurrency())")
-                    .frame(maxWidth: .infinity)
-                    .fontWeight(.bold)
-
-                Text("\(budgetCategory.overSpent ? "Overspent": "Remaining") \(budgetCategory.remainingBudgetTotal.formatAsCurrency())")
-                    .frame(maxWidth: .infinity)
-                    .fontWeight(.bold)
-                    .foregroundColor(budgetCategory.overSpent ? .red: .green)
-            }
+            Text("\(budgetCategory.overSpent ? "Overspent": "Remaining") \(budgetCategory.remainingBudgetTotal.formatAsCurrency())")
+                .frame(maxWidth: .infinity)
+                .fontWeight(.bold)
+                .foregroundColor(budgetCategory.overSpent ? .red: .green)
             
-           
         }
     }
 }
@@ -33,6 +27,6 @@ struct BudgetSummaryView: View {
 
 struct BudgetSummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetSummaryView()
+        BudgetSummaryView(budgetCategory: BudgetCategory.preview)
     }
 }

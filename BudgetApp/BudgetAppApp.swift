@@ -20,13 +20,9 @@ struct BudgetAppApp: App {
         WindowGroup {
             NavigationStack {
                 ContentView()
-                    .navigationDestination(for: Route.self) { route in
-                        switch route {
-                            case .detail(let category):
-                                BudgetDetailView(budgetCategory: category)
-                        }
-                    }
-            }.environmentObject(model)
+                   
+            }//.environmentObject(model)
+            .environment(\.managedObjectContext, CoreDataManager.shared.viewContext)
         }
     }
 }

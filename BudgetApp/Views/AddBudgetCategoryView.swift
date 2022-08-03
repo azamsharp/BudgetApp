@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddBudgetCategoryView: View {
     
-    @EnvironmentObject private var model: Model
+    @Environment(\.managedObjectContext) private var viewContext
     
     @Environment(\.dismiss) private var dismiss
     @State private var name: String = ""
@@ -23,11 +23,18 @@ struct AddBudgetCategoryView: View {
         // validate the form
         if isFormValid {
             do {
-                try model.addCategory(name: name, total: total)
-                dismiss()
-            } catch BudgetCategoryError.alreadyExists {
-                messages.append("Category already exists.")
-            }
+                
+                if !BudgetCategory.exists(name) {
+                    let budgetCategory = BudgetCategory(context: viewContext)
+                    budgetCategory.name = name
+                    budgetCategory.total = total
+                    try viewContext.save()
+                    dismiss()
+                } else {
+                    messages.append("Category already exists.")
+                }
+
+            } 
             catch {
                 messages.append(error.localizedDescription)
             }
@@ -48,7 +55,7 @@ struct AddBudgetCategoryView: View {
     }
     
     var body: some View {
-        
+        let _ = print(Self._printChanges())
         NavigationStack {
             Form {
                 TextField("Name", text: $name)

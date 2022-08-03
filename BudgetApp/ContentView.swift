@@ -9,19 +9,44 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(fetchRequest: BudgetCategory.all) var budgetCategoryResults
+    
     @State private var isPresented: Bool = false
-    @EnvironmentObject private var model: Model
+    
+    
+    private func deleteBudgetCategory(_ indexSet: IndexSet) {
+        
+        guard let index = indexSet.first else { return }
+        let budget = budgetCategoryResults[index]
+        viewContext.delete(budget)
+        do {
+            try viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+    }
+    
+    var total: Double {
+        budgetCategoryResults.reduce(0) { result, budgetCategory in
+            return result + budgetCategory.total
+        }
+    }
     
     var body: some View {
+        let _ = print(Self._printChanges())
         List {
             
-            if !model.categories.isEmpty {
-                Text("Total budget \(model.total.formatAsCurrency())")
+            if !budgetCategoryResults.isEmpty {
+                
+                Text("Total budget \(total.formatAsCurrency())")
                     .frame(maxWidth: .infinity)
                     .fontWeight(.bold)
                 
-                ForEach(model.categories) { category in
-                    NavigationLink(value: Route.detail(category)) {
+                ForEach(budgetCategoryResults) { category in
+                    let _ = print("\(category.id)")
+                    NavigationLink(value: category) {
                         HStack {
                             Text(category.name ?? "")
                             Spacer()
@@ -35,22 +60,20 @@ struct ContentView: View {
                            
                         }
                     }
-                }
+                }.onDelete(perform: deleteBudgetCategory)
             } else {
                 Text("No budget categories found.")
             }
             
             
         }
-        .task {
-            model.fetchBudgetCategories()
-        }
+        .navigationDestination(for: BudgetCategory.self, destination: { category in
+            BudgetDetailView(budgetCategory: category)
+        })
         .listStyle(.plain)
         .sheet(isPresented: $isPresented, content: {
             AddBudgetCategoryView()
         })
-       // .navigationTitle("Budget")
-        
             .toolbar {
                 
                 ToolbarItem(placement: .navigationBarLeading) {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BudgetDetailView: View {
     
-    @EnvironmentObject private var model: Model
+    @Environment(\.managedObjectContext) private var viewContext
     let budgetCategory: BudgetCategory
     @State private var name: String = ""
     @State private var total: String = ""
@@ -23,8 +23,14 @@ struct BudgetDetailView: View {
     private func saveTransaction() {
         if isFormValid {
             do {
-                try model.addTransactionToBudget(name: name, total: Double(total)!, category: budgetCategory)
-                // clear fields
+                
+                let transaction = Transaction(context: viewContext)
+                transaction.name = name
+                transaction.total = Double(total)!
+                
+                budgetCategory.addToTransactions(transaction)
+                try viewContext.save()
+                
                 name = ""
                 total = ""
             } catch {
@@ -34,6 +40,7 @@ struct BudgetDetailView: View {
     }
     
     var body: some View {
+        let _ = print(Self._printChanges())
         VStack(alignment: .leading) {
             
             HStack {
@@ -62,24 +69,24 @@ struct BudgetDetailView: View {
                 }
             }.frame(maxHeight: 200)
             
-            if let transactions = budgetCategory.transactions {
-                let allTransactions = (transactions.allObjects as? [Transaction]) ?? []
-                if allTransactions.isEmpty {
-                    Text("No transactions.")
-                } else {
-                    List {
-                        BudgetSummaryView()
-                        TransactionListView(transactions: allTransactions)
+            BudgetSummaryView(budgetCategory: budgetCategory)
+            
+            if budgetCategory.transactions?.count == 0 {
+                Text("No transactions.")
+                    .padding([.top], 20)
+            } else {
+                VStack {
+                    TransactionListView(fetchRequest: FetchRequest(fetchRequest: budgetCategory.transactionsFetchRequest)) { transaction in
+                        // delete transaction
+                        viewContext.delete(transaction)
+                        try! viewContext.save()
                     }
                 }
             }
-            
+           
             Spacer()
             
         }.padding()
-            .onAppear {
-                model.budgetCategory = budgetCategory
-            }
     }
 }
 

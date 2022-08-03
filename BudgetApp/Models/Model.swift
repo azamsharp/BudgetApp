@@ -12,6 +12,7 @@ enum BudgetCategoryError: Error {
     case alreadyExists
 }
 
+// AGGREGATE ROOT
 class Model: ObservableObject {
     
     let viewContext = CoreDataManager.shared.viewContext
@@ -40,8 +41,13 @@ class Model: ObservableObject {
         fetchBudgetCategories()
     }
     
-    func budgetById(_ id: NSManagedObjectID) -> BudgetCategory? {
-         viewContext.object(with: id) as? BudgetCategory
+    func budgetById(_ id: NSManagedObjectID) throws -> BudgetCategory  {
+        
+        guard let budgetCategory = try viewContext.existingObject(with: id) as? BudgetCategory else {
+            fatalError("Budget Category does not exist")
+        }
+        
+        return budgetCategory 
     }
     
     func addCategory(name: String, total: Double) throws {
@@ -60,6 +66,11 @@ class Model: ObservableObject {
         categories.append(category)
     }
     
+    func deleteBudgetCategory(_ budgetCategory: BudgetCategory) throws {
+        viewContext.delete(budgetCategory)
+        try viewContext.save()
+    }
+    
     private func budgetCategoryExists(_ name: String) -> Bool {
         let request = BudgetCategory.fetchRequest()
         request.predicate = NSPredicate(format: "name == %@", name)
@@ -69,8 +80,28 @@ class Model: ObservableObject {
     func fetchBudgetCategories() {
         
         let request = BudgetCategory.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
         categories = (try? viewContext.fetch(request)) ?? []
+    }
+    
+    func removeTransactionById(_ id: NSManagedObjectID) throws {
         
+        let transaction = try viewContext.existingObject(with: id)
+        viewContext.delete(transaction)
+        try viewContext.save()
+        
+    }
+    
+    func removeTransaction(_ transaction: Transaction) throws {
+        
+        let transaction = try viewContext.existingObject(with: transaction.objectID)
+        viewContext.delete(transaction)
+        try viewContext.save()
+    }
+    
+    func removeTransactionFromBudget(budget: BudgetCategory, transaction: Transaction) throws {
+        budget.removeFromTransactions(transaction)
+        try viewContext.save()
     }
     
 }
