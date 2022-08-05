@@ -10,10 +10,9 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
+   
     @FetchRequest(fetchRequest: BudgetCategory.all) var budgetCategoryResults
-    
     @State private var isPresented: Bool = false
-    
     
     private func deleteBudgetCategory(_ indexSet: IndexSet) {
         
@@ -101,6 +100,6 @@ struct ContentView_Previews: PreviewProvider {
                             BudgetDetailView(budgetCategory: budget)
                     }
                 }
-        }.environmentObject(Model())
+        }
     }
 }

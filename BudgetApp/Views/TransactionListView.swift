@@ -6,29 +6,16 @@
 //
 
 import SwiftUI
-import CoreData 
+import CoreData
 
 struct TransactionListView: View {
     
-    @Environment(\.managedObjectContext) private var viewContext
-    
-    let fetchRequest: FetchRequest<Transaction>
-    private var transactions: FetchedResults<Transaction> {
-        return fetchRequest.wrappedValue
-    }
+    @FetchRequest var transactions: FetchedResults<Transaction>
     let onDelete: (Transaction) -> Void
     
-    private func deleteTransaction(at indexSet: IndexSet) {
-        
-        guard let indexToDelete = indexSet.first else { return }
-        let transaction = transactions[indexToDelete]
-        print(transaction) // sometimes this displays a fault object for some elements.
-        print(transaction.objectID) // objectID always exists
-        
-        print("delete Transaction")
-        print(transaction.total.formatAsCurrency())
-        
-        onDelete(transaction)
+    init(request: NSFetchRequest<Transaction>, onDelete: @escaping (Transaction) -> Void) {
+        _transactions = FetchRequest(fetchRequest: request)
+        self.onDelete = onDelete
     }
     
     var body: some View {
@@ -44,7 +31,9 @@ struct TransactionListView: View {
                         Spacer()
                         Text(transaction.total.formatAsCurrency())
                     }
-                }.onDelete(perform: deleteTransaction)
+                }.onDelete { offsets in
+                    offsets.map { transactions[$0] }.forEach(onDelete)
+                }
             }
         }
         

@@ -18,13 +18,11 @@ public class BudgetCategory: NSManagedObject {
     
     // for preview
     static var preview: BudgetCategory {
-        let model = Model()
-        model.fetchBudgetCategories()
-        return model.categories[0]
+        BudgetCategory()
     }
     
     static func exists(_ name: String) -> Bool {
-        let vc = CoreDataManager.shared.viewContext
+        let vc = CoreDataProvider.shared.viewContext
         let request = BudgetCategory.fetchRequest()
         request.sortDescriptors = []
         request.predicate = NSPredicate(format: "name == %@", name)
@@ -55,18 +53,23 @@ public class BudgetCategory: NSManagedObject {
         self.total - transactionsTotal
     }
     
-    var transactionsArray: [Transaction] {
+    private var transactionsArray: [Transaction] {
 
         guard let transactions = transactions else { return [] }
         let allTransactions = (transactions.allObjects as? [Transaction]) ?? []
-        //return allTransactions
-        
         return allTransactions.sorted { t1, t2 in
             t1.dateCreated! > t2.dateCreated!
         } 
     }
     
-    lazy var transactionsFetchRequest: NSFetchRequest<Transaction> = {
+    static func transactionByCategoryRequest(_ budgetCategory: BudgetCategory) -> NSFetchRequest<Transaction> {
+        let request = Transaction.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
+        request.predicate = NSPredicate(format: "category = %@", budgetCategory)
+        return request
+    }
+    
+    lazy var transactionByCategoryRequest: NSFetchRequest<Transaction> = {
         let request = Transaction.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
         request.predicate = NSPredicate(format: "category = %@", self)

@@ -39,6 +39,15 @@ struct BudgetDetailView: View {
         }
     }
     
+    private func deleteTransaction(_ transaction: Transaction) {
+        viewContext.delete(transaction)
+        do {
+            try viewContext.save()
+        } catch {
+            print(error)
+        }
+    }
+    
     var body: some View {
         let _ = print(Self._printChanges())
         VStack(alignment: .leading) {
@@ -75,13 +84,7 @@ struct BudgetDetailView: View {
                 Text("No transactions.")
                     .padding([.top], 20)
             } else {
-                VStack {
-                    TransactionListView(fetchRequest: FetchRequest(fetchRequest: budgetCategory.transactionsFetchRequest)) { transaction in
-                        // delete transaction
-                        viewContext.delete(transaction)
-                        try! viewContext.save()
-                    }
-                }
+                    TransactionListView(request: BudgetCategory.transactionByCategoryRequest(budgetCategory), onDelete: deleteTransaction)
             }
            
             Spacer()
@@ -92,6 +95,6 @@ struct BudgetDetailView: View {
 
 struct BudgetDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        BudgetDetailView(budgetCategory: BudgetCategory.preview).environmentObject(Model())
+        BudgetDetailView(budgetCategory: BudgetCategory.preview)
     }
 }

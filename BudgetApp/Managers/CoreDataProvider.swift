@@ -8,9 +8,9 @@
 import Foundation
 import CoreData
 
-class CoreDataManager {
+class CoreDataProvider {
     
-    static let shared: CoreDataManager = CoreDataManager()
+    static let shared: CoreDataProvider = CoreDataProvider()
     private var persistentContainer: NSPersistentContainer
     
     private init() {

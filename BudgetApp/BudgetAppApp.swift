@@ -14,15 +14,12 @@ enum Route: Hashable {
 @main
 struct BudgetAppApp: App {
     
-    @StateObject private var model: Model = Model()
-    
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                ContentView()
-                   
-            }//.environmentObject(model)
-            .environment(\.managedObjectContext, CoreDataManager.shared.viewContext)
+                ContentView()      
+            }
+            .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
         }
     }
 }
