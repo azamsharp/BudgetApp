@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum SheetPresentationMode {
+    case add
+    case edit 
+}
+
 struct ContentView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -32,7 +37,7 @@ struct ContentView: View {
             return result + budgetCategory.total
         }
     }
-    
+  
     var body: some View {
         let _ = print(Self._printChanges())
         List {
@@ -56,7 +61,10 @@ struct ContentView: View {
                                     .foregroundColor(category.overSpent ? .red: .green)
                                     .font(.caption)
                             }
-                           
+                        }
+                        .contentShape(Rectangle())
+                        .onLongPressGesture {
+                            isPresented = true
                         }
                     }
                 }.onDelete(perform: deleteBudgetCategory)
@@ -93,13 +101,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            ContentView()
-                .navigationDestination(for: Route.self) { route in
-                    switch route {
-                        case .detail(let budget):
-                            BudgetDetailView(budgetCategory: budget)
-                    }
-                }
+            ContentView().environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
         }
     }
 }
