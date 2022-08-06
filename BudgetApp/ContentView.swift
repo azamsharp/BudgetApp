@@ -32,6 +32,9 @@ struct ContentView: View {
     var body: some View {
         let _ = print(Self._printChanges())
         
+        Text(total as NSNumber, formatter: NumberFormatter.currency)
+            .fontWeight(.bold)
+        
         BudgetListView(budgetCategoryResults: budgetCategoryResults) { category in
             sheetAction = .edit(category)
         } onDelete: { category in

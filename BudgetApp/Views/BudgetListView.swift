@@ -18,11 +18,6 @@ struct BudgetListView: View {
             
             if !budgetCategoryResults.isEmpty {
                 
-                /*
-                Text("Total budget \(total.formatAsCurrency())")
-                    .frame(maxWidth: .infinity)
-                    .fontWeight(.bold) */
-                
                 ForEach(budgetCategoryResults) { category in
                     let _ = print("\(category.id)")
                     NavigationLink(value: Route.detail(category)) {
@@ -30,18 +25,18 @@ struct BudgetListView: View {
                             Text(category.name ?? "")
                             Spacer()
                             VStack(alignment: .trailing, spacing: 10) {
-                                Text(category.total.formatAsCurrency())
+                                Text(category.total as NSNumber, formatter: NumberFormatter.currency)
                                 Text("\(category.overSpent ? "Overspent": "Remaining") \(category.remainingBudgetTotal.formatAsCurrency())")
                                     .fontWeight(.bold)
                                     .foregroundColor(category.overSpent ? .red: .green)
                                     .font(.caption)
                             }
                         }
+                        .contentShape(Rectangle())
                         .onLongPressGesture {
-                            //sheetAction = .edit(category)
                             onEdit(category)
                         }
-                    } .contentShape(Rectangle())
+                    }
                 }.onDelete { indexSet in
                     indexSet.map { budgetCategoryResults[$0] }.forEach(onDelete)
                 }

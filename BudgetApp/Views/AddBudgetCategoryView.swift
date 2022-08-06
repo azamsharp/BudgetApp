@@ -82,6 +82,8 @@ struct AddBudgetCategoryView: View {
                     Text(message)
                 }
                 
+               
+                
             }
             .onAppear {
                
@@ -102,6 +104,7 @@ struct AddBudgetCategoryView: View {
                     }
                 }
             }
+            .navigationTitle(budgetCategoryToEdit == nil ? "Add": "Edit")
         }
         
         
