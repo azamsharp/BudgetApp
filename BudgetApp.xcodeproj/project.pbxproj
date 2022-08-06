@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34443D6C289E138300930498 /* BudgetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34443D6B289E138300930498 /* BudgetListView.swift */; };
 		34BD43BF2895C7C10000BA49 /* AddBudgetCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BD43BE2895C7C10000BA49 /* AddBudgetCategoryView.swift */; };
 		34BD43C22895CD490000BA49 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BD43C12895CD490000BA49 /* Double+Extensions.swift */; };
 		34BD43C42895E4480000BA49 /* BudgetDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BD43C32895E4480000BA49 /* BudgetDetailView.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		34443D6B289E138300930498 /* BudgetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetListView.swift; sourceTree = "<group>"; };
 		34BD43BE2895C7C10000BA49 /* AddBudgetCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBudgetCategoryView.swift; sourceTree = "<group>"; };
 		34BD43C12895CD490000BA49 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		34BD43C32895E4480000BA49 /* BudgetDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetDetailView.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				34BD43C32895E4480000BA49 /* BudgetDetailView.swift */,
 				8DD065662896C82300EFEDB5 /* TransactionListView.swift */,
 				8DD065682896C91500EFEDB5 /* BudgetSummaryView.swift */,
+				34443D6B289E138300930498 /* BudgetListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				34BD43C62896189B0000BA49 /* BudgetCategory+CoreDataClass.swift in Sources */,
 				8DD065672896C82300EFEDB5 /* TransactionListView.swift in Sources */,
 				34ED22802895AF3500D1DC87 /* CoreDataProvider.swift in Sources */,
+				34443D6C289E138300930498 /* BudgetListView.swift in Sources */,
 				34ED227D2895AF1300D1DC87 /* BudgetModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
