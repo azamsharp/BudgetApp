@@ -7,17 +7,23 @@
 
 import SwiftUI
 
-enum SheetPresentationMode {
+enum SheetAction: Identifiable {
+    
+    var id: UUID {
+        UUID()
+    }
+    
     case add
-    case edit 
+    case edit(BudgetCategory)
 }
 
 struct ContentView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
-   
     @FetchRequest(fetchRequest: BudgetCategory.all) var budgetCategoryResults
     @State private var isPresented: Bool = false
+    @State private var sheetAction: SheetAction?
+    @State private var budgetCategoryToEdit: BudgetCategory?
     
     private func deleteBudgetCategory(_ indexSet: IndexSet) {
         
@@ -62,9 +68,10 @@ struct ContentView: View {
                                     .font(.caption)
                             }
                         }
-                        .contentShape(Rectangle())
+                        //.contentShape(Rectangle())
                         .onLongPressGesture {
-                            isPresented = true
+                            //budgetCategoryToEdit = category
+                            sheetAction = .edit(category)
                         }
                     }
                 }.onDelete(perform: deleteBudgetCategory)
@@ -78,11 +85,16 @@ struct ContentView: View {
             BudgetDetailView(budgetCategory: category)
         })
         .listStyle(.plain)
-        .sheet(isPresented: $isPresented, content: {
-            AddBudgetCategoryView()
-        })
-            .toolbar {
+        .sheet(item: $sheetAction, content: { sheetAction in
+            switch sheetAction {
+                case .add:
+                    AddBudgetCategoryView()
+                case .edit(let category):
+                    AddBudgetCategoryView(budgetCategoryToEdit: category)
                 
+            }
+        })
+        .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Text("Budget")
                         .font(.largeTitle)
@@ -91,7 +103,7 @@ struct ContentView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                    
                     Button("Add Category") {
-                        isPresented = true
+                        sheetAction = .add
                     }
                 }
             }

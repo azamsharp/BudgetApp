@@ -15,6 +15,11 @@ struct AddBudgetCategoryView: View {
     @State private var name: String = ""
     @State private var total: Double = 100
     @State private var messages: [String] = []
+    private var budgetCategoryToEdit: BudgetCategory?
+    
+    init(budgetCategoryToEdit: BudgetCategory? = nil) {
+        self.budgetCategoryToEdit = budgetCategoryToEdit
+    }
     
     private func saveBudgetCategory() {
         
@@ -54,6 +59,34 @@ struct AddBudgetCategoryView: View {
         return messages.count == 0
     }
     
+    private func saveOrUpdate() {
+        
+        if isFormValid {
+            if !BudgetCategory.exists(name) {
+                if let budgetCategoryToEdit {
+                    // get the budget to update
+                    let budget = BudgetCategory.byId(budgetCategoryToEdit.objectID)
+                    budget.name = name
+                    budget.total = total
+                } else {
+                    let budgetCategory = BudgetCategory(context: viewContext)
+                    budgetCategory.name = name
+                    budgetCategory.total = total
+                }
+                do {
+                    try viewContext.save()
+                    dismiss()
+                } catch {
+                    print(error.localizedDescription)
+                }
+                
+            } else {
+                messages.append("Category name should be unique.")
+            }
+        }
+        
+    }
+    
     var body: some View {
         let _ = print(Self._printChanges())
         NavigationStack {
@@ -73,7 +106,15 @@ struct AddBudgetCategoryView: View {
                     Text(message)
                 }
                 
-            }.toolbar {
+            }
+            .onAppear {
+               
+                if let budgetCategoryToEdit {
+                    self.name = budgetCategoryToEdit.name ?? ""
+                    self.total = budgetCategoryToEdit.total
+                }
+            }
+            .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
                         dismiss()
@@ -81,7 +122,7 @@ struct AddBudgetCategoryView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        saveBudgetCategory()
+                        saveOrUpdate()
                     }
                 }
             }

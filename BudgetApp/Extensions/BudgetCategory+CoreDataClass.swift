@@ -62,6 +62,15 @@ public class BudgetCategory: NSManagedObject {
         } 
     }
     
+    static func byId(_ id: NSManagedObjectID) -> BudgetCategory {
+        let vc = CoreDataProvider.shared.viewContext
+        guard let budgetCategory = vc.object(with: id) as? BudgetCategory else {
+            fatalError("Id not found.")
+        }
+        
+        return budgetCategory
+    }
+    
     static func transactionByCategoryRequest(_ budgetCategory: BudgetCategory) -> NSFetchRequest<Transaction> {
         let request = Transaction.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(key: "dateCreated", ascending: false)]
