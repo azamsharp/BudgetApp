@@ -21,9 +21,7 @@ struct ContentView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(fetchRequest: BudgetCategory.all) var budgetCategoryResults
-    @State private var isPresented: Bool = false
     @State private var sheetAction: SheetAction?
-    @State private var budgetCategoryToEdit: BudgetCategory?
     
     private func deleteBudgetCategory(_ indexSet: IndexSet) {
         
@@ -56,7 +54,7 @@ struct ContentView: View {
                 
                 ForEach(budgetCategoryResults) { category in
                     let _ = print("\(category.id)")
-                    NavigationLink(value: category) {
+                    NavigationLink(value: Route.detail(category)) {
                         HStack {
                             Text(category.name ?? "")
                             Spacer()
@@ -68,12 +66,11 @@ struct ContentView: View {
                                     .font(.caption)
                             }
                         }
-                        //.contentShape(Rectangle())
+                       
                         .onLongPressGesture {
-                            //budgetCategoryToEdit = category
                             sheetAction = .edit(category)
                         }
-                    }
+                    } .contentShape(Rectangle())
                 }.onDelete(perform: deleteBudgetCategory)
             } else {
                 Text("No budget categories found.")
@@ -81,9 +78,6 @@ struct ContentView: View {
             
             
         }
-        .navigationDestination(for: BudgetCategory.self, destination: { category in
-            BudgetDetailView(budgetCategory: category)
-        })
         .listStyle(.plain)
         .sheet(item: $sheetAction, content: { sheetAction in
             switch sheetAction {
@@ -91,7 +85,6 @@ struct ContentView: View {
                     AddBudgetCategoryView()
                 case .edit(let category):
                     AddBudgetCategoryView(budgetCategoryToEdit: category)
-                
             }
         })
         .toolbar {

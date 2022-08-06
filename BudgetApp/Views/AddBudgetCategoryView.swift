@@ -21,31 +21,6 @@ struct AddBudgetCategoryView: View {
         self.budgetCategoryToEdit = budgetCategoryToEdit
     }
     
-    private func saveBudgetCategory() {
-        
-        messages = []
-        
-        // validate the form
-        if isFormValid {
-            do {
-                
-                if !BudgetCategory.exists(name) {
-                    let budgetCategory = BudgetCategory(context: viewContext)
-                    budgetCategory.name = name
-                    budgetCategory.total = total
-                    try viewContext.save()
-                    dismiss()
-                } else {
-                    messages.append("Category already exists.")
-                }
-
-            } 
-            catch {
-                messages.append(error.localizedDescription)
-            }
-        }
-    }
-    
     var isFormValid: Bool {
         
         if name.isEmpty {
@@ -62,29 +37,30 @@ struct AddBudgetCategoryView: View {
     private func saveOrUpdate() {
         
         if isFormValid {
-            if !BudgetCategory.exists(name) {
-                if let budgetCategoryToEdit {
-                    // get the budget to update
-                    let budget = BudgetCategory.byId(budgetCategoryToEdit.objectID)
-                    budget.name = name
-                    budget.total = total
-                } else {
+            
+            if let budgetCategoryToEdit {
+                // get the budget to update
+                let budget = BudgetCategory.byId(budgetCategoryToEdit.objectID)
+                budget.name = name
+                budget.total = total
+            } else {
+                if !BudgetCategory.exists(name) {
                     let budgetCategory = BudgetCategory(context: viewContext)
                     budgetCategory.name = name
                     budgetCategory.total = total
+                } else {
+                    messages.append("Category name should be unique.")
                 }
-                do {
-                    try viewContext.save()
-                    dismiss()
-                } catch {
-                    print(error.localizedDescription)
-                }
-                
-            } else {
-                messages.append("Category name should be unique.")
+            }
+            
+            // save the context
+            do {
+                try viewContext.save()
+                dismiss() 
+            } catch {
+                print(error.localizedDescription)
             }
         }
-        
     }
     
     var body: some View {

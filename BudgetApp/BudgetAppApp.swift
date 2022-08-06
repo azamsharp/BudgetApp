@@ -17,7 +17,13 @@ struct BudgetAppApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                ContentView()      
+                ContentView()
+                    .navigationDestination(for: Route.self, destination: { route in
+                        switch route {
+                        case .detail(let budgetCategory):
+                            BudgetDetailView(budgetCategory: budgetCategory)
+                        }
+                    })
             }
             .environment(\.managedObjectContext, CoreDataProvider.shared.viewContext)
         }
